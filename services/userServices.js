@@ -100,7 +100,6 @@ const userLogin = async (req, res) => {
                 //Cookie configuration
                 try {
                     // read cookies
-                    console.log(req.cookies)
 
                     let options = {
                         maxAge: 1000 * 60 * 15, // would expire after 15 minutes
@@ -183,7 +182,6 @@ const getAllPost = async (req, res) => {
 
         // retrieving all posts' data from database
         let result = await dba.collection(config.blogsCollection).find().toArray();
-        console.log(result)
         if (result.length) {
             res.status(200).send({
                 data: result
