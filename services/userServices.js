@@ -1,12 +1,12 @@
-var config = require('../config/config');
-var response = require('../config/responses');
-var commonHelpers = require('../helpers/commonHelpers');
-var ObjectId = require('mongodb').ObjectId;
-var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
-var express = require('express');
-var app = express();
-var cookieParser = require('cookie-parser');
+const config = require('../config/config');
+const response = require('../config/responses');
+const commonHelpers = require('../helpers/commonHelpers');
+const ObjectId = require('mongodb').ObjectId;
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const express = require('express');
+const app = express();
+const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
 
@@ -112,7 +112,7 @@ const userLogin = async (req, res) => {
                     res.cookie('cookieName', token, options) // options is optional
                     // res.send('')
                 } catch (error) {
-                    console.log(error);
+                    res.send(400)
 
                 }
 
@@ -166,7 +166,6 @@ const createPost = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error);
         res.status(400).send({
             msg: error.errmsg
         })
@@ -214,7 +213,7 @@ const deletePost = async (req, res) => {
 
         if (postId) {
             // deleteing post from database using postId
-            let R = await dba.collection('blogs').find({
+            let result = await dba.collection('blogs').find({
                 $and: [{
                         createdBy: req.userId
                     },
@@ -224,11 +223,11 @@ const deletePost = async (req, res) => {
                 ]
             }).toArray()
 
-                if (R.length) {
+                if (result.length) {
                      await dba.collection(config.blogsCollection).deleteOne({ _id: ObjectId(postId) });
                     res.status(200).send(response.successful_delete);
                 } else {
-                    res.status(400).send(response.no_data_found);
+                    res.status(400).send(response.user_not_valid);
                 }
         } else {
             res.status(400).send(response.invalid_parameters)

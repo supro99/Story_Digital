@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var userServices = require('../services/userServices');
-var verifyToken = require('../auth/verifyToken');
+const express = require('express');
+const router = express.Router();
+const userServices = require('../services/userServices');
+const verifyToken = require('../auth/verifyToken');
 
 
 /* GET users listing. */
